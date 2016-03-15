@@ -50,9 +50,36 @@ func parseTxt(fileName string) {
 		k, _ := strconv.Atoi(temp[2])
 		adjacencyMatrix[i][k] = j
 	}
-
 }
+
+func process() {
+	for i := range adjacencyMatrix {
+		for j := range adjacencyMatrix[i] {
+			if adjacencyMatrix[i][j] == 2 || adjacencyMatrix[i][j] == 1 {
+				addRelations(i, j)
+			}
+		}
+	}
+}
+
+func addRelations(upperEdge, lowerEdge int) {
+	for i := range adjacencyMatrix[lowerEdge] {
+		if adjacencyMatrix[lowerEdge][i] == 2 || adjacencyMatrix[lowerEdge][i] == 1 {
+			adjacencyMatrix[upperEdge][i] = adjacencyMatrix[lowerEdge][i]
+		}
+	}
+}
+
 func main() {
 	parseTxt("1.txt")
+	process()
+	for i := range adjacencyMatrix {
+		for j := range adjacencyMatrix[i] {
+			if adjacencyMatrix[i][j] != 0 {
+				fmt.Printf("(%d; %d)=%d ", i, j, adjacencyMatrix[i][j])
+			}
+		}
+		fmt.Printf("\n")
+	}
 
 }
