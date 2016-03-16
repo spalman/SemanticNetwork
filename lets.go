@@ -56,30 +56,48 @@ func process() {
 	for i := range adjacencyMatrix {
 		for j := range adjacencyMatrix[i] {
 			if adjacencyMatrix[i][j] == 2 || adjacencyMatrix[i][j] == 1 {
-				addRelations(i, j)
+				addRelations(i, j, baseRelations[adjacencyMatrix[i][j]].relType)
 			}
 		}
 	}
 }
 
-func addRelations(upperEdge, lowerEdge int) {
-	for i := range adjacencyMatrix[lowerEdge] {
-		if adjacencyMatrix[lowerEdge][i] == 2 || adjacencyMatrix[lowerEdge][i] == 1 {
-			adjacencyMatrix[upperEdge][i] = adjacencyMatrix[lowerEdge][i]
+func addRelations(upperEdge, lowerEdge, relType int) {
+
+	switch relType { //adjacencyMatrix[lowerEdge][i] == 2 || adjacencyMatrix[lowerEdge][i] == 1 {
+	case 1:
+		for i := range adjacencyMatrix[lowerEdge] {
+			if adjacencyMatrix[lowerEdge][i] != 0 && baseRelations[adjacencyMatrix[lowerEdge][i]].relType != 0 {
+				adjacencyMatrix[upperEdge][i] = adjacencyMatrix[lowerEdge][i]
+			}
+		}
+	case 2:
+		for i := range adjacencyMatrix[lowerEdge] {
+			if adjacencyMatrix[lowerEdge][i] == 1 {
+				adjacencyMatrix[upperEdge][i] = adjacencyMatrix[lowerEdge][i]
+			}
 		}
 	}
+}
+
+func requestHandler() {
+
 }
 
 func main() {
 	parseTxt("1.txt")
 	process()
 	for i := range adjacencyMatrix {
+		b := false
 		for j := range adjacencyMatrix[i] {
 			if adjacencyMatrix[i][j] != 0 {
 				fmt.Printf("(%d; %d)=%d ", i, j, adjacencyMatrix[i][j])
+				b = true
 			}
 		}
-		fmt.Printf("\n")
+		if b {
+			fmt.Printf("\n")
+		}
 	}
 
 }
