@@ -82,9 +82,6 @@ func addRelations(upperEdge, lowerEdge, relType int) {
 
 func requestHandler(request string) {
 	temp := strings.Split(request, ":")
-	//fmt.Printf("temp: %s %s %s", temp[0], temp[1], temp[2])
-	temp[2] = temp[2][0 : len(temp[2])-1]
-
 	switch {
 	// True/false request
 	case temp[0] != "?" && temp[1] != "?" && temp[2] != "?":
@@ -174,21 +171,14 @@ func requestHandler(request string) {
 func main() {
 	parseTxt("TestData/1.txt")
 	process()
-	for i := range adjacencyMatrix {
-		b := false
-		for j := range adjacencyMatrix[i] {
-			if adjacencyMatrix[i][j] != 0 {
-				fmt.Printf("(%d; %d)=%d ", i, j, adjacencyMatrix[i][j])
-				b = true
-			}
-		}
-		if b {
-			fmt.Printf("\n")
+	var input string
+	for {
+		fmt.Printf("Enter query or type Q to exit: ")
+		fmt.Scanln(&input)
+		if input != "Q" {
+			requestHandler(input)
+		} else {
+			return
 		}
 	}
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter text: ")
-	text, _ := reader.ReadString('\n')
-	requestHandler(text)
-
 }
